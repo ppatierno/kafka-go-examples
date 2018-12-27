@@ -60,6 +60,5 @@ func main() {
 		}
 	}
 
-	fmt.Println("Closing")
 	w.Close()
 }
