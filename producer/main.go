@@ -23,7 +23,7 @@ func main() {
 	// go routine for getting signals asynchronously
 	go func() {
 		sig := <-signals
-		fmt.Println(sig)
+		fmt.Println("Got signal: ", sig)
 		done <- true
 	}()
 
@@ -36,6 +36,8 @@ func main() {
 
 	w := kafka.NewWriter(config)
 
+	fmt.Println("Producer configuration: ", config)
+
 	i := 1
 
 	var closing bool
@@ -44,13 +46,15 @@ func main() {
 		err := w.WriteMessages(context.Background(), kafka.Message{Value: []byte(message)})
 		if err == nil {
 			fmt.Println("Sent message: ", message)
+		} else {
+			fmt.Println("Error sending message: ", err)
 		}
 		i++
 
 		// checking close or sleep
 		select {
 		case closing = <-done:
-			fmt.Println("closing =", closing)
+			fmt.Println("Closing: ", closing)
 		default:
 			time.Sleep(time.Second)
 		}

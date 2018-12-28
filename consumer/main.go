@@ -23,7 +23,7 @@ func main() {
 
 	go func() {
 		sig := <-signals
-		fmt.Println(sig)
+		fmt.Println("Got signal: ", sig)
 		cancel()
 	}()
 
@@ -41,10 +41,12 @@ func main() {
 
 	r := kafka.NewReader(config)
 
+	fmt.Println("Consumer configuration: ", config)
+
 	for {
 		m, err := r.ReadMessage(ctx)
 		if err != nil {
-			fmt.Println("err =", err)
+			fmt.Println("Error reading message: ", err)
 			break
 		}
 		fmt.Printf("Received message from %v-%v [%v]: %s = %s\n", m.Topic, m.Partition, m.Offset, string(m.Key), string(m.Value))
@@ -52,6 +54,6 @@ func main() {
 
 	err := r.Close()
 	if err != nil {
-		fmt.Println("Error closing consumer")
+		fmt.Println("Error closing consumer: ", err)
 	}
 }
