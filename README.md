@@ -7,3 +7,5 @@ Apache Kafka sample applications in Go language using the [segmentio Kafka Go li
 * util: utility package used by the consumer/producer applications.
 
 It also provides the related Dockerfile for building Docker container images but it's needed to build the applications before building these images.
+
+Finally, it provides YAML files describing Kubernetes Deployment(s) for the consumer and producer applications.
