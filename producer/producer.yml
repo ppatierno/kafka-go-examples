@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-go-producer
+spec:
+  selector:
+    matchLabels:
+      app: kafka-go-producer
+  template:
+    metadata:
+      labels:
+        app: kafka-go-producer
+    spec:
+      containers:
+      - name: kafka-go-producer
+        image: ppatierno/kafka-go-producer:latest
+        env:
+          - name: BOOTSTRAP_SERVERS
+            value: "my-cluster-kafka-bootstrap:9092"
+          - name: TOPIC
+            value: "my-topic"
