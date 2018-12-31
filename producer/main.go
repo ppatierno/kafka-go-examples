@@ -16,15 +16,16 @@ import (
 func main() {
 
 	signals := make(chan os.Signal, 1)
-	done := make(chan bool, 1)
 
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGKILL)
+
+	ctx, cancel := context.WithCancel(context.Background())
 
 	// go routine for getting signals asynchronously
 	go func() {
 		sig := <-signals
 		fmt.Println("Got signal: ", sig)
-		done <- true
+		cancel()
 	}()
 
 	bootstrapServers := strings.Split(util.GetEnv(util.BootstrapServers, "localhost:9092"), ",")
@@ -40,28 +41,20 @@ func main() {
 
 	i := 1
 
-	var closing bool
 	for {
 		message := fmt.Sprintf("Message-%d", i)
-		err := w.WriteMessages(context.Background(), kafka.Message{Value: []byte(message)})
+		err := w.WriteMessages(ctx, kafka.Message{Value: []byte(message)})
 		if err == nil {
 			fmt.Println("Sent message: ", message)
+		} else if err == context.Canceled {
+			fmt.Println("Context canceled: ", err)
+			break
 		} else {
 			fmt.Println("Error sending message: ", err)
 		}
 		i++
 
-		// checking close or sleep
-		select {
-		case closing = <-done:
-			fmt.Println("Closing: ", closing)
-		default:
-			time.Sleep(time.Second)
-		}
-
-		if closing {
-			break
-		}
+		time.Sleep(time.Second)
 	}
 
 	w.Close()

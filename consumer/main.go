@@ -21,6 +21,7 @@ func main() {
 
 	ctx, cancel := context.WithCancel(context.Background())
 
+	// go routine for getting signals asynchronously
 	go func() {
 		sig := <-signals
 		fmt.Println("Got signal: ", sig)
