@@ -50,7 +50,7 @@ func main() {
 			fmt.Println("Error reading message: ", err)
 			break
 		}
-		fmt.Printf("Received message from %v-%v [%v]: %s = %s\n", m.Topic, m.Partition, m.Offset, string(m.Key), string(m.Value))
+		fmt.Printf("Received message from %s-%d [%d]: %s = %s\n", m.Topic, m.Partition, m.Offset, string(m.Key), string(m.Value))
 	}
 
 	err := r.Close()

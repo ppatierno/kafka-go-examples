@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -30,6 +31,7 @@ func main() {
 
 	bootstrapServers := strings.Split(util.GetEnv(util.BootstrapServers, "localhost:9092"), ",")
 	topic := util.GetEnv(util.Topic, "my-topic")
+	delayMs, _ := strconv.Atoi(util.GetEnv(util.DelayMs, string(1000)))
 
 	config := kafka.WriterConfig{
 		Brokers: bootstrapServers,
@@ -54,8 +56,11 @@ func main() {
 		}
 		i++
 
-		time.Sleep(time.Second)
+		time.Sleep(time.Duration(delayMs) * time.Millisecond)
 	}
 
-	w.Close()
+	err := w.Close()
+	if err != nil {
+		fmt.Println("Error closing producer: ", err)
+	}
 }

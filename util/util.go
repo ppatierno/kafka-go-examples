@@ -9,6 +9,8 @@ const (
 	Topic string = "TOPIC"
 	// GroupID : consumer group
 	GroupID string = "GROUP_ID"
+	// DelayMs : between sent messages
+	DelayMs string = "DELAY_MS"
 )
 
 // GetEnv : returns the environment variable value
