@@ -44,6 +44,15 @@ func main() {
 
 	i := 1
 
+	defer func() {
+		err := w.Close()
+		if err != nil {
+			fmt.Println("Error closing producer: ", err)
+			return
+		}
+		fmt.Println("Producer closed")
+	}()
+
 	for {
 		message := fmt.Sprintf("Message-%d", i)
 		err := w.WriteMessages(ctx, kafka.Message{Value: []byte(message)})
@@ -58,10 +67,5 @@ func main() {
 		i++
 
 		time.Sleep(time.Duration(delayMs) * time.Millisecond)
-	}
-
-	err := w.Close()
-	if err != nil {
-		fmt.Println("Error closing producer: ", err)
 	}
 }

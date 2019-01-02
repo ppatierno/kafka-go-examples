@@ -44,6 +44,15 @@ func main() {
 
 	fmt.Println("Consumer configuration: ", config)
 
+	defer func() {
+		err := r.Close()
+		if err != nil {
+			fmt.Println("Error closing consumer: ", err)
+			return
+		}
+		fmt.Println("Consumer closed")
+	}()
+
 	for {
 		m, err := r.ReadMessage(ctx)
 		if err != nil {
@@ -51,10 +60,5 @@ func main() {
 			break
 		}
 		fmt.Printf("Received message from %s-%d [%d]: %s = %s\n", m.Topic, m.Partition, m.Offset, string(m.Key), string(m.Value))
-	}
-
-	err := r.Close()
-	if err != nil {
-		fmt.Println("Error closing consumer: ", err)
 	}
 }
