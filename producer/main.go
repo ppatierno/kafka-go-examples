@@ -31,11 +31,12 @@ func main() {
 
 	bootstrapServers := strings.Split(util.GetEnv(util.BootstrapServers, "localhost:9092"), ",")
 	topic := util.GetEnv(util.Topic, "my-topic")
-	delayMs, _ := strconv.Atoi(util.GetEnv(util.DelayMs, string(1000)))
+	delayMs, _ := strconv.Atoi(util.GetEnv(util.DelayMs, strconv.Itoa(1000)))
 
 	config := kafka.WriterConfig{
-		Brokers: bootstrapServers,
-		Topic:   topic}
+		Brokers:      bootstrapServers,
+		Topic:        topic,
+		BatchTimeout: 1 * time.Millisecond}
 
 	w := kafka.NewWriter(config)
 
