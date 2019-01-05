@@ -37,8 +37,7 @@ func main() {
 		GroupID:  groupID,
 		Topic:    topic,
 		MaxWait:  500 * time.Millisecond,
-		MinBytes: 1,
-		MaxBytes: 1e6}
+		MinBytes: 1}
 
 	r := kafka.NewReader(config)
 
