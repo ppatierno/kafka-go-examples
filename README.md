@@ -1,9 +1,12 @@
 # Apache Kafka Go examples
 
-Apache Kafka sample applications in Go language using the [segmentio Kafka Go library](https://github.com/segmentio/kafka-go).
+Apache Kafka sample applications in Go language using the [segmentio](https://github.com/segmentio/kafka-go) and [shopify sarama](https://github.com/Shopify/sarama) Kafka Go libraries.
 
-* consumer: consumer application.
-* producer: producer application.
+* segmentio:
+    * consumer: consumer application.
+    * producer: producer application.
+* sarama:
+    * sync-producer: synchronous producer application
 * util: utility package used by the consumer/producer applications.
 
 It also provides the related Dockerfile for building Docker container images but it's needed to build the applications before building these images.
