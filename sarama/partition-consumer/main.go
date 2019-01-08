@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"strconv"
 	"strings"
 	"syscall"
 
@@ -20,6 +21,7 @@ func main() {
 
 	bootstrapServers := strings.Split(util.GetEnv(util.BootstrapServers, "localhost:9092"), ",")
 	topic := util.GetEnv(util.Topic, "my-topic")
+	partition, _ := strconv.Atoi(util.GetEnv(util.Partition, strconv.Itoa(0)))
 
 	consumer, err := sarama.NewConsumer(bootstrapServers, nil)
 	if err != nil {
@@ -35,8 +37,7 @@ func main() {
 		fmt.Println("Consumer closed")
 	}()
 
-	var partition int32 = 0
-	partitionConsumer, err := consumer.ConsumePartition(topic, partition, sarama.OffsetNewest)
+	partitionConsumer, err := consumer.ConsumePartition(topic, int32(partition), sarama.OffsetNewest)
 	if err != nil {
 		panic("Error creating the partition consumer")
 	}

@@ -11,6 +11,8 @@ const (
 	GroupID string = "GROUP_ID"
 	// DelayMs : between sent messages
 	DelayMs string = "DELAY_MS"
+	// Partition : partition from which to consume
+	Partition string = "PARTITION"
 )
 
 // GetEnv : returns the environment variable value

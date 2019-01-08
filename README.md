@@ -7,6 +7,7 @@ Apache Kafka sample applications in Go language using the [segmentio](https://gi
     * producer: producer application.
 * sarama:
     * sync-producer: synchronous producer application
+    * partition-consumer: partition consumer application
 * util: utility package used by the consumer/producer applications.
 
 It also provides the related Dockerfile for building Docker container images but it's needed to build the applications before building these images.
