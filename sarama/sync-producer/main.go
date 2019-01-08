@@ -16,15 +16,8 @@ import (
 func main() {
 
 	signals := make(chan os.Signal, 1)
-	done := make(chan bool, 1)
 
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGKILL)
-
-	go func() {
-		sig := <-signals
-		fmt.Println("Got signal: ", sig)
-		done <- true
-	}()
 
 	bootstrapServers := strings.Split(util.GetEnv(util.BootstrapServers, "localhost:9092"), ",")
 	topic := util.GetEnv(util.Topic, "my-topic")
@@ -62,8 +55,8 @@ producerLoop:
 		i++
 
 		select {
-		case closing := <-done:
-			fmt.Println("Got closing: ", closing)
+		case sig := <-signals:
+			fmt.Println("Got signal: ", sig)
 			break producerLoop
 		default:
 			time.Sleep(time.Duration(delayMs) * time.Millisecond)
