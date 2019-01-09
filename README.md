@@ -7,6 +7,7 @@ Apache Kafka sample applications in Go language using the [segmentio](https://gi
     * producer: producer application.
 * sarama:
     * sync-producer: synchronous producer application
+    * async-producer: asynchronous producer application
     * partition-consumer: partition consumer application
 * util: utility package used by the consumer/producer applications.
 
